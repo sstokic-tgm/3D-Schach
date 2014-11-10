@@ -1,9 +1,13 @@
 package projekt.ServerImpl.RegLogLogic;
 
+import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 import com.mysql.jdbc.jdbc2.optional.*;
+
 import java.io.*;
 import java.sql.*;
 import java.util.logging.*;
+
+import projekt.ServerImpl.Packets.AuthenticationPacket;
 
 /**
  * This class implements the connection logic for the database. It allows connecting, disconnecting, registering
@@ -33,7 +37,7 @@ public class JDBCConnectionLogic {
 	 * Setup the JDBCConnectionLogic logger
 	 */
 	public JDBCConnectionLogic() {
-
+		
 		final String logV = "./logs/jdbcconnectionlogic.log";
 
 		if(!hasFileHandler)
@@ -62,6 +66,8 @@ public class JDBCConnectionLogic {
 				log.log(Level.SEVERE, "IOException: " + ioe.getMessage());
 			}
 		}
+		
+		connect();
 	}
 
 	/**
@@ -69,7 +75,7 @@ public class JDBCConnectionLogic {
 	 * 
 	 * @return if the connection was successfull or not
 	 */
-	public boolean connect() {
+	private boolean connect() {
 
 		this.ds = new MysqlDataSource();
 
