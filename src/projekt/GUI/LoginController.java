@@ -1,24 +1,29 @@
 package projekt.GUI;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import javax.swing.JOptionPane;
 
+import projekt.Client.Test.TestClient;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 
-public class LoginController implements Initializable{
-	private Login log = new Login();
+public class LoginController{
 	
-	@FXML
-	public void initialize(URL location, ResourceBundle resources) {
-		log.getLogin().setOnAction(new EventHandler<ActionEvent>() {
+	@FXML private Button bLogin; 
+	@FXML private TextField tfUsername;
+	@FXML private PasswordField pfPassword;
+
+	@FXML public void handleLogin(ActionEvent event) {
+		
+		
+		
+		if(tfUsername.getText().trim().length() == 0 &&  pfPassword.getText().trim().length() == 0) {
 			
-			@FXML
-			public void handle(ActionEvent event) {
-				System.out.println(":D");
-			}
-		}); 
+			JOptionPane.showMessageDialog(null, "Username and password is empty!");
+		}
+		else {
+			
+			new TestClient(tfUsername.getText(), pfPassword.getText());
+		}
 	}
 }
