@@ -16,7 +16,7 @@ public class LoginFrame extends Application  {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-
+		//always starts from the rootdirectory bin
 		URL url = getClass().getResource("/projekt/GUI/fxml/LoginFrame.fxml");
 		//System.out.println(url);
 		Parent root = FXMLLoader.load(url);
