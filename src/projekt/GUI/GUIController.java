@@ -1,13 +1,22 @@
 package projekt.GUI;
 
+import java.io.IOException;
+import java.net.URL;
+
 import javax.swing.JOptionPane;
 
 import projekt.Client.Test.TestClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
-public class LoginController{
+public class GUIController{
+	private RegFrame regf;
+	private LoginFrame logf;
 	
 	@FXML private Button bLogin; 
 	@FXML private TextField tfUsername;
@@ -28,9 +37,15 @@ public class LoginController{
 			
 		}
 	}
-	@FXML public void handleReg(ActionEvent event){
-		
+	@FXML public void handleReg(ActionEvent event) throws IOException{
 		// Hier RegFrame aufrufen
+		regf = new RegFrame();
+//		logf = new LoginFrame();
+		
+		logf.getLoginInstance().loginStage.close();
+		
+		//logf.getLoginStage().hide();
+		regf.createRegFrame();
 		
 	}
 	@FXML public void handleSignUp(ActionEvent event){
@@ -38,6 +53,15 @@ public class LoginController{
 		
 		
 		//new TestClient(tfUsername.getText(), pfPassword.getText());
+		
+		regf.regStage.close();
+		logf.getLoginInstance().loginStage.show();
+		
+	}
+@FXML public void handleCancel(ActionEvent event){
+			
+		regf.regStage.close();
+		logf.getLoginInstance().loginStage.show();
 		
 	}
 }
