@@ -5,15 +5,14 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml" fx:controller="projekt.GUI.LoginController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projekt.GUI.GUIController">
    <children>
       <Label layoutX="125.0" layoutY="43.0" prefHeight="54.0" prefWidth="100.0" text="Login">
          <font>
             <Font name="System Bold" size="32.0" />
          </font>
       </Label>
-      <TextField alignment="CENTER" layoutX="32.0" layoutY="160.0" prefHeight="30.0" prefWidth="288.0" fx:id="tfUsername" promptText="Username">
+      <TextField fx:id="tfUsername" alignment="CENTER" layoutX="32.0" layoutY="160.0" prefHeight="30.0" prefWidth="288.0" promptText="Username">
          <font>
             <Font size="14.0" />
          </font>
@@ -29,7 +28,7 @@
          </font>
       </Label>
       <Button fx:id="bLogin" layoutX="186.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="30.0" prefWidth="95.0" text="Login" />
-      <Button layoutX="71.0" layoutY="344.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="95.0" text="Register" />
-      <PasswordField alignment="CENTER" layoutX="32.0" layoutY="248.0" prefHeight="30.0" prefWidth="288.0" fx:id="pfPassword" promptText="Password"/>
+      <Button fx:id="bReg" layoutX="71.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleReg" prefHeight="30.0" prefWidth="95.0" text="Register" />
+      <PasswordField fx:id="pfPassword" alignment="CENTER" layoutX="32.0" layoutY="248.0" prefHeight="30.0" prefWidth="288.0" promptText="Password" />
    </children>
 </Pane>

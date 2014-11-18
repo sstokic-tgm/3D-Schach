@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="408.0" prefWidth="517.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="408.0" prefWidth="517.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projekt.GUI.GUIController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a8e7f8" height="64.0" layoutX="27.0" layoutY="289.0" stroke="BLACK" strokeType="INSIDE" width="242.0" />
       <TextField layoutX="38.0" layoutY="169.0" prefHeight="25.0" prefWidth="449.0" />
@@ -33,8 +33,8 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="bSignUp" layoutX="410.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleReg" prefHeight="25.0" prefWidth="77.0" text="Sign up" />
-      <Button layoutX="293.0" layoutY="305.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Cancel" />
+      <Button fx:id="bSignUp" layoutX="410.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleSignUp" prefHeight="25.0" prefWidth="77.0" text="Sign up" />
+      <Button layoutX="293.0" layoutY="305.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Cancel" onAction="#handleCancel"/>
       <Label layoutX="38.0" layoutY="279.0" prefHeight="64.0" prefWidth="262.0" text="Note: Please use only letters (A-Z) and" />
       <Label layoutX="38.0" layoutY="322.0" text="numbers for the username and password." />
    </children>
