@@ -6,36 +6,62 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="408.0" prefWidth="517.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projekt.GUI.GUIController">
    <children>
+<<<<<<< HEAD
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a8e7f8" height="64.0" layoutX="27.0" layoutY="289.0" stroke="BLACK" strokeType="INSIDE" width="262.0" />
       <TextField fx:id="tfRegisterUsername" layoutX="38.0" layoutY="169.0" prefHeight="25.0" prefWidth="449.0" />
       <PasswordField fx:id="pfRegisterPassword" layoutX="38.0" layoutY="238.0" prefHeight="25.0" prefWidth="211.0" />
       <PasswordField fx:id="pfRegisterPasswordRetype" layoutX="276.0" layoutY="238.0" prefHeight="25.0" prefWidth="211.0" />
       <Label layoutX="160.0" layoutY="48.0" text="Regristration">
+=======
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a8e7f8" height="64.0" layoutX="16.0" layoutY="289.0" stroke="BLACK" strokeType="INSIDE" width="262.0" />
+      <Label layoutX="159.0" layoutY="48.0" text="Regristration">
+>>>>>>> e749a9b88896f3175d2a17f6be2f69bf5e2a2e51
          <font>
-            <Font name="System Bold" size="32.0" />
+            <Font name="Verdana" size="32.0" />
          </font>
       </Label>
-      <Label layoutX="38.0" layoutY="133.0" text="Choose a username">
+      <Label layoutX="38.0" layoutY="131.0" text="Choose a username">
          <font>
-            <Font size="14.0" />
+            <Font name="Verdana" size="14.0" />
          </font>
       </Label>
+      <TextField fx:id="tfRegisterUsername" layoutX="38.0" layoutY="169.0" prefHeight="25.0" prefWidth="449.0" />
       <Label layoutX="38.0" layoutY="204.0" text="Type in your password">
          <font>
-            <Font size="14.0" />
+            <Font name="Verdana" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="276.0" layoutY="204.0" text="Re-type password">
+      <PasswordField fx:id="pfRegisterPassword" layoutX="38.0" layoutY="238.0" prefHeight="25.0" prefWidth="211.0" />
+      <Label layoutX="278.0" layoutY="204.0" text="Re-type password">
          <font>
-            <Font size="14.0" />
+            <Font name="Verdana" size="14.0" />
          </font>
       </Label>
+<<<<<<< HEAD
       <Button fx:id="bCancel" layoutX="293.0" layoutY="305.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Cancel" onAction="#handleCancel" />
       <Button fx:id="bSignUp" layoutX="410.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleSignUp" prefHeight="25.0" prefWidth="77.0" text="Sign up" />
       <Label layoutX="38.0" layoutY="279.0" prefHeight="64.0" prefWidth="262.0" text="Note: Please use only letters (A-Z) and" />
       <Label layoutX="38.0" layoutY="322.0" text="numbers for the username and password." />
+=======
+      <PasswordField fx:id="pfRegisterPasswordRetype" layoutX="276.0" layoutY="238.0" prefHeight="25.0" prefWidth="211.0" />
+      <Button fx:id="bSignUp" layoutX="410.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleSignUp" prefHeight="25.0" prefWidth="77.0" text="Sign up">
+         <font>
+            <Font name="Verdana" size="12.0" />
+         </font></Button>
+      <Button fx:id="bCancel" layoutX="293.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="25.0" prefWidth="77.0" text="Cancel">
+         <font>
+            <Font name="Verdana" size="12.0" />
+         </font></Button>
+      <Label layoutX="20.0" layoutY="273.0" prefHeight="64.0" prefWidth="262.0" text="Note: Please use only letters (A-Z) and">
+         <font>
+            <Font name="Verdana" size="12.0" />
+         </font></Label>
+      <Label layoutX="20.0" layoutY="323.0" text="numbers for the username and password.">
+         <font>
+            <Font name="Verdana" size="12.0" />
+         </font></Label>
+>>>>>>> e749a9b88896f3175d2a17f6be2f69bf5e2a2e51
    </children>
 </Pane>

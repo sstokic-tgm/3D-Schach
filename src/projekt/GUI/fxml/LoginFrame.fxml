@@ -7,28 +7,43 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projekt.GUI.GUIController">
    <children>
-      <Label layoutX="125.0" layoutY="43.0" prefHeight="54.0" prefWidth="100.0" text="Login">
+      <Label layoutX="131.0" layoutY="43.0" prefHeight="54.0" prefWidth="100.0" text="Login">
          <font>
-            <Font name="System Bold" size="32.0" />
+            <Font name="Verdana" size="32.0" />
          </font>
       </Label>
       <TextField fx:id="tfLoginUsername" alignment="CENTER" layoutX="32.0" layoutY="160.0" prefHeight="30.0" prefWidth="288.0" promptText="Username">
          <font>
-            <Font size="14.0" />
+            <Font name="Verdana" size="14.0" />
          </font>
       </TextField>
       <Label alignment="CENTER" layoutX="118.0" layoutY="116.0" prefHeight="20.0" prefWidth="115.0" text="Username">
          <font>
-            <Font size="14.0" />
+            <Font name="Verdana" size="14.0" />
          </font>
       </Label>
       <Label alignment="CENTER" layoutX="118.0" layoutY="215.0" prefHeight="20.0" prefWidth="115.0" text="Password">
          <font>
-            <Font size="14.0" />
+            <Font name="Verdana" size="14.0" />
          </font>
       </Label>
+<<<<<<< HEAD
       <PasswordField fx:id="pfLoginPassword" alignment="CENTER" layoutX="32.0" layoutY="248.0" prefHeight="30.0" prefWidth="288.0" promptText="Password" />
       <Button fx:id="bLogin" layoutX="186.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="30.0" prefWidth="95.0" text="Login" />
       <Button fx:id="bReg" layoutX="71.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleReg" prefHeight="30.0" prefWidth="95.0" text="Register" />
+=======
+      <PasswordField fx:id="pfLoginPassword" alignment="CENTER" layoutX="32.0" layoutY="248.0" prefHeight="30.0" prefWidth="288.0" promptText="Password">
+         <font>
+            <Font name="Verdana" size="12.0" />
+         </font></PasswordField>
+      <Button fx:id="bLogin" layoutX="186.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="30.0" prefWidth="95.0" text="Login">
+         <font>
+            <Font name="Verdana" size="12.0" />
+         </font></Button>
+      <Button fx:id="bReg" layoutX="71.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleReg" prefHeight="30.0" prefWidth="95.0" text="Register">
+         <font>
+            <Font name="Verdana" size="12.0" />
+         </font></Button>
+>>>>>>> e749a9b88896f3175d2a17f6be2f69bf5e2a2e51
    </children>
 </Pane>
