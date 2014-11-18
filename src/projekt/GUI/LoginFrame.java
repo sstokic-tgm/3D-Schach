@@ -8,6 +8,8 @@ import javafx.fxml.*;
 
 public class LoginFrame extends Application  {
 
+public static Stage loginStage;
+public static LoginFrame logInstance = null;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -15,7 +17,8 @@ public class LoginFrame extends Application  {
 	}
 
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage loginStage) throws Exception {
+		this.loginStage = loginStage;
 		//always starts from the rootdirectory bin
 		URL url = getClass().getResource("/projekt/GUI/fxml/LoginFrame.fxml");
 		//System.out.println(url);
@@ -23,10 +26,21 @@ public class LoginFrame extends Application  {
 
 		Scene scene = new Scene(root);
 
-		stage.setTitle("3D Schach");
-		stage.setScene(scene);
-		stage.setResizable(false); // current, cause no layout and its awful if you resize it
-		stage.show();
+		loginStage.setTitle("3D Schach");
+		loginStage.setScene(scene);
+		loginStage.setResizable(false); // current, cause no layout and its awful if you resize it
+		loginStage.show();
+		//loginStage.hide();
 	}
-
+	private Stage getLoginStage(){
+		return loginStage;
+	}
+	
+	public static LoginFrame getLoginInstance(){
+		
+		if(logInstance == null)
+			 return logInstance = new LoginFrame();
+		else
+			return logInstance;
+	}
 }
