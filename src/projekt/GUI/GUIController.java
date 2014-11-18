@@ -15,53 +15,55 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class GUIController{
+
 	private RegFrame regf;
 	private LoginFrame logf;
-	
-	@FXML private Button bLogin; 
-	@FXML private TextField tfUsername;
-	@FXML private PasswordField pfPassword;
 
-	/*
-	 * these methods handles a specific Actionevent set in the FXML File
-	 */
+	@FXML private Button bLogin, bSignUp, bCancel; 
+	@FXML private TextField tfLoginUsername, tfRegisterUsername;
+	@FXML private PasswordField pfLoginPassword, pfRegisterPassword, pfRegisterPasswordRetype;
+
+
 	@FXML public void handleLogin(ActionEvent event) {
-	
-		if(tfUsername.getText().trim().length() == 0 &&  pfPassword.getText().trim().length() == 0) {
-			
+
+		if(tfLoginUsername.getText().trim().length() == 0 &&  pfLoginPassword.getText().trim().length() == 0) {
+
 			JOptionPane.showMessageDialog(null, "Username and password is empty!");
-		}
-		else {
-			System.out.println(tfUsername.getText()+" just logged on.\n"+tfUsername.getText()+"'s Password = "+pfPassword.getText());
-			
-			
+
+		}else {
+
+			new TestClient().loginTestClient(tfLoginUsername.getText(), pfLoginPassword.getText());
 		}
 	}
+
 	@FXML public void handleReg(ActionEvent event) throws IOException{
-		// Hier RegFrame aufrufen
+
 		regf = new RegFrame();
-//		logf = new LoginFrame();
-		
+
 		logf.getLoginInstance().loginStage.close();
-		
-		//logf.getLoginStage().hide();
 		regf.createRegFrame();
-		
+
 	}
+
 	@FXML public void handleSignUp(ActionEvent event){
-		
-		
-		
-		//new TestClient(tfUsername.getText(), pfPassword.getText());
-		
-		regf.regStage.close();
-		logf.getLoginInstance().loginStage.show();
-		
+
+		if((tfRegisterUsername.getText().trim().length() == 0 &&  pfRegisterPassword.getText().trim().length() == 0) && (pfRegisterPassword.getText().equals(pfRegisterPasswordRetype.getText()))) {
+
+			JOptionPane.showMessageDialog(null, "Invalid input!");
+
+		}else {
+
+			new TestClient().registerTestClient(tfRegisterUsername.getText(), pfRegisterPassword.getText());
+
+			regf.regStage.close();
+			logf.getLoginInstance().loginStage.show();
+		}
 	}
-@FXML public void handleCancel(ActionEvent event){
-			
+
+	@FXML public void handleCancel(ActionEvent event){
+
 		regf.regStage.close();
 		logf.getLoginInstance().loginStage.show();
-		
+
 	}
 }
