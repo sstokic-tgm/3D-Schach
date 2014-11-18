@@ -12,7 +12,7 @@
             <Font name="System Bold" size="32.0" />
          </font>
       </Label>
-      <TextField fx:id="tfUsername" alignment="CENTER" layoutX="32.0" layoutY="160.0" prefHeight="30.0" prefWidth="288.0" promptText="Username">
+      <TextField fx:id="tfLoginUsername" alignment="CENTER" layoutX="32.0" layoutY="160.0" prefHeight="30.0" prefWidth="288.0" promptText="Username">
          <font>
             <Font size="14.0" />
          </font>
@@ -27,8 +27,8 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <PasswordField fx:id="pfLoginPassword" alignment="CENTER" layoutX="32.0" layoutY="248.0" prefHeight="30.0" prefWidth="288.0" promptText="Password" />
       <Button fx:id="bLogin" layoutX="186.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="30.0" prefWidth="95.0" text="Login" />
       <Button fx:id="bReg" layoutX="71.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleReg" prefHeight="30.0" prefWidth="95.0" text="Register" />
-      <PasswordField fx:id="pfPassword" alignment="CENTER" layoutX="32.0" layoutY="248.0" prefHeight="30.0" prefWidth="288.0" promptText="Password" />
    </children>
 </Pane>
