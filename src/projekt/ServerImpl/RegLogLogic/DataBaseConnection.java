@@ -8,8 +8,12 @@ import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 public class DataBaseConnection extends Connection implements AuthenticationPacket {
 
 	JDBCConnectionLogic jdbcConLogic;
+	private String username;
+	private static DataBaseConnection dbCon;
 	
 	public DataBaseConnection() {
+		
+		dbCon = this;
 		
 		new ObjectSpace(this).register(1, this);
 		
@@ -17,6 +21,8 @@ public class DataBaseConnection extends Connection implements AuthenticationPack
 	}
 	
 	public boolean login(String username, String password) {
+		
+		this.username = username;
 		
 		return jdbcConLogic.login(username, password);
 	}
@@ -31,5 +37,18 @@ public class DataBaseConnection extends Connection implements AuthenticationPack
 		
 		jdbcConLogic.disconnect();
 		return jdbcConLogic.getStatus();
+	}
+	
+	public String getUsername() {
+		
+		return this.username;
+	}
+	
+	public static DataBaseConnection getDatabaseConnectionInstance() {
+		
+		if(dbCon == null)
+			dbCon = new DataBaseConnection();
+		
+		return dbCon;
 	}
 }
