@@ -20,14 +20,15 @@ import com.esotericsoftware.kryonet.rmi.ObjectSpace;
  * @author Stokic Stefan
  * @version 0.1
  */
-public class LoginServer {
+public class GameServer {
 
 	private Server server;
 	private Map<Integer, AuthenticationSessionPacket> sessionUsers = new HashMap<Integer, AuthenticationSessionPacket>();
-	private static LoginServer instanceLoginServer;
+	private Map<Integer, User> users = new HashMap<Integer, User>();
+	private static GameServer instanceLoginServer;
 	
 
-	public LoginServer() {
+	public GameServer() {
 
 		instanceLoginServer = this;
 		
@@ -43,7 +44,7 @@ public class LoginServer {
 
 
 		registerPackets();
-		server.addListener(new LoginServerNetworkListener());
+		server.addListener(new GameServerNetworkListener());
 
 		try {
 			
@@ -62,7 +63,10 @@ public class LoginServer {
 
 		ObjectSpace.registerClasses(kryo);
 		kryo.register(AuthenticationPacket.class);
+		kryo.register(AddUserPacket.class);
+		kryo.register(RemoveUserPacket.class);
 		kryo.register(AuthenticationSessionPacket.class);
+		kryo.register(String.class);
 	}
 
 	public Map<Integer, AuthenticationSessionPacket> getSessionUsers() {
@@ -70,23 +74,26 @@ public class LoginServer {
 		return this.sessionUsers;
 	}
 	
+	public Map<Integer, User> getUsersMap() {
+
+		return this.users;
+	}
+	
 	public Server getServer() {
 		
 		return server;
 	}
 	
-	public static LoginServer getLoginServerInstance() {
+	public static GameServer getLoginServerInstance() {
 		
 		if(instanceLoginServer == null)
-			instanceLoginServer = new LoginServer();
+			instanceLoginServer = new GameServer();
 		
 		return instanceLoginServer;
 	}
 
 	public static void main(String[] args) throws IOException {
 
-		new LoginServer();
-		new LobbyServer();
+		new GameServer();
 	}
-
 }
