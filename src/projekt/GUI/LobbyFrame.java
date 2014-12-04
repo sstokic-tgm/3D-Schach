@@ -1,29 +1,26 @@
 package projekt.GUI;
 
-import java.io.IOException;
-import java.net.URL;
+import javax.swing.JFrame;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+public class LobbyFrame extends JFrame {
 
-public class LobbyFrame{
-
-	public static Stage lobbyStage;
-
-	public void createLobbyFrame() throws IOException{
-
-		URL url = getClass().getResource("/projekt/GUI/fxml/LobbyFrame.fxml");
-
-		lobbyStage = new Stage();
-
-		Parent regParent = FXMLLoader.load(url);
-
-		Scene regScene = new Scene(regParent);
-
-		lobbyStage.setTitle("Lobby");
-		lobbyStage.setScene(regScene);
-		//lobbyStage.setResizable(false);
+	protected LobbyPanel lobbyPanel;
+	
+	public LobbyFrame() {
+		
+		super("Lobby");
+		lobbyPanel = new LobbyPanel();
+		
+		createLobbyPanel();
+	}
+	
+	protected void createLobbyPanel() {
+		
+		this.add(this.lobbyPanel);
+		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setBounds(0, 0, 899, 662);
+		this.setLocationRelativeTo(null);
+		this.setVisible(true);
 	}
 }

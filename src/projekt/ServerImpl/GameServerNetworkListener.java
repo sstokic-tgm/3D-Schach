@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
+import projekt.GUI.LobbyPanel;
+import projekt.ServerImpl.Chat.ChatMessage;
 import projekt.ServerImpl.Packets.*;
 import projekt.ServerImpl.RegLogLogic.*;
 
@@ -12,15 +14,12 @@ import com.esotericsoftware.kryonet.*;
 
 public class GameServerNetworkListener extends Listener {
 
-	protected boolean bAddUser = false;
 
 	public void connected(Connection con) {
 
-		String username = DataBaseConnection.getDatabaseConnectionInstance().getUsername();
 		AuthenticationSessionPacket authSessionPacket = new AuthenticationSessionPacket();
 
 		authSessionPacket.id = con.getID();
-		//authSessionPacket.username = username;
 
 		GameServer.getLoginServerInstance().getSessionUsers().put(authSessionPacket.id, authSessionPacket);
 		con.sendTCP(authSessionPacket);
@@ -29,6 +28,7 @@ public class GameServerNetworkListener extends Listener {
 	public void disconnected(Connection con) {
 
 		GameServer.getLoginServerInstance().getUsersMap().remove(con.getID());
+		GameServer.getLoginServerInstance().getSessionUsers().remove(con.getID());
 
 		RemoveUserPacket packet = new RemoveUserPacket();
 		packet.id = con.getID();
@@ -48,7 +48,7 @@ public class GameServerNetworkListener extends Listener {
 				AddUserPacket packet = new AddUserPacket();
 				packet.id = authSessionPacket.id;
 				packet.username = authSessionPacket.username;
-				GameServer.getLoginServerInstance().getServer().sendToAllExceptTCP(con.getID(), packet);
+				GameServer.getLoginServerInstance().getServer().sendToAllTCP(packet);
 
 				for(User u : GameServer.getLoginServerInstance().getUsersMap().values()) {
 
@@ -59,13 +59,17 @@ public class GameServerNetworkListener extends Listener {
 				}
 
 				User user = new User();
-
 				user.username = authSessionPacket.username;
 				user.con = con;
 				GameServer.getLoginServerInstance().getUsersMap().put(con.getID(), user);
 
 
 			}
+			
+		}else if(obj instanceof ChatMessage) {
+			
+			ChatMessage chatMessage = (ChatMessage)obj;
+			GameServer.getLoginServerInstance().getServer().sendToAllTCP(chatMessage);
 		}
 	}
 }

@@ -4,6 +4,7 @@ package projekt.Client.Test;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -15,6 +16,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
+import projekt.GUI.LobbyFrame;
+import projekt.GUI.LobbyPanel;
+import projekt.ServerImpl.Chat.ChatMessage;
 import projekt.ServerImpl.Packets.*;
 
 import com.esotericsoftware.kryo.Kryo;
@@ -26,6 +30,8 @@ import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 
 public class TestClient extends Listener {
 
+	protected static TestClient testClientInstance;
+	
 	private Client client;
 	private AuthenticationPacket authPacket;
 	private boolean login = false;
@@ -33,11 +39,13 @@ public class TestClient extends Listener {
 	private Map<Integer, String> users = new HashMap<Integer, String>();
 	private String username;
 	protected boolean bAddUser = false;
-	private ObservableList data = FXCollections.observableArrayList();
+	protected boolean bRemoveUser = false;
 
 
 	public void loginTestClient(String username, String password) {
 
+		testClientInstance = this;
+		
 		this.username = username;
 
 		client = new Client();
@@ -59,23 +67,43 @@ public class TestClient extends Listener {
 				System.out.print("Login... Connection status: ");
 
 				if(login == true) {
+					
 					System.out.print("true");
 
 					System.out.println("\nDisconnecting... Connection status: " + authPacket.disconnect());
 
+					new LobbyFrame();
+
 
 					while(client.isConnected()) {
 
+						if(this.bAddUser == true) {
 
+							LobbyPanel.getLobbyPanelInstance().getDefaultListModel().removeAllElements();
+							
+							for(Map.Entry<Integer, String> entry : users.entrySet()) {
+
+								LobbyPanel.getLobbyPanelInstance().getDefaultListModel().addElement(entry.getValue().toString());
+								System.out.println("bAddUser\n"+entry.getValue().toString());
+							}
+
+
+							this.bAddUser = false;
+						}
+
+						if(this.bRemoveUser == true) {
+
+							LobbyPanel.getLobbyPanelInstance().getDefaultListModel().removeAllElements();
+
+							for(Map.Entry<Integer, String> entry : users.entrySet()) {
+
+								LobbyPanel.getLobbyPanelInstance().getDefaultListModel().addElement(entry.getValue().toString());
+								System.out.println("bRemoveUser\n"+entry.getValue().toString());
+							}
+
+							this.bRemoveUser = false;
+						}
 					}
-					//					Iterator it = users.entrySet().iterator();
-					//					while(it.hasNext()) {
-					//
-					//						Map.Entry pairs = (Map.Entry)it.next();
-					//						System.out.println(pairs.getKey() + " = " + pairs.getValue());
-					//						activeuserTable.getColumns().add(pairs.getValue());
-					//						it.remove(); // avoids a ConcurrentModificationException
-					//					}
 
 
 				}else {
@@ -122,41 +150,21 @@ public class TestClient extends Listener {
 		}).start();
 	}
 
-	@FXML private ListView userList;
-
-
-
 	public void received(Connection con, Object obj) {
 
 		if(obj instanceof AddUserPacket) {
 
 			AddUserPacket packet = (AddUserPacket)obj;
-
 			users.put(packet.id, packet.username);
+
 			this.bAddUser = true;
-
-			if(this.bAddUser == true) {
-
-
-				Iterator it = users.entrySet().iterator();
-				while(it.hasNext()) {
-
-					Map.Entry pairs = (Map.Entry)it.next();
-					System.out.println(pairs.getKey() + " = " + pairs.getValue());
-					//								data.add(users);
-					//								activeuserTable.setItems(data);
-					data.add(pairs.getValue());
-
-					it.remove(); // avoids a ConcurrentModificationException
-				}
-				userList.setItems(data);
-				this.bAddUser = false;
-			}
 
 		}else if(obj instanceof RemoveUserPacket) {
 
 			RemoveUserPacket packet = (RemoveUserPacket)obj;
 			users.remove(packet.id);
+
+			this.bRemoveUser = true;
 
 		}else if(obj instanceof AuthenticationSessionPacket) {
 
@@ -164,7 +172,23 @@ public class TestClient extends Listener {
 
 			authSessionPacket.username = this.username;
 			client.sendTCP(authSessionPacket);
+		
+		}else if(obj instanceof ChatMessage) {
+			
+			ChatMessage chatMessage = (ChatMessage)obj;
+			
+			LobbyPanel.getLobbyPanelInstance().getChatView().append(chatMessage.message + "\n");
 		}
+	}
+
+	public Client getClient() {
+		
+		return client;
+	}
+
+	public String getUsername() {
+		
+		return username;
 	}
 
 	private void registerPackets() {
@@ -176,6 +200,15 @@ public class TestClient extends Listener {
 		kryo.register(AddUserPacket.class);
 		kryo.register(RemoveUserPacket.class);
 		kryo.register(AuthenticationSessionPacket.class);
+		kryo.register(ChatMessage.class);
 		kryo.register(String.class);
+	}
+	
+	public static TestClient getTestClientInstance() {
+		
+		if(testClientInstance == null)
+			testClientInstance = new TestClient();
+		
+		return testClientInstance;
 	}
 }

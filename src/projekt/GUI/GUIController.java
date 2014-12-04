@@ -3,6 +3,7 @@ package projekt.GUI;
 import java.io.IOException;
 import java.net.URL;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import projekt.Client.Test.TestClient;
@@ -18,13 +19,14 @@ public class GUIController{
 
 	private RegFrame regf;
 	private LoginFrame logf;
+	private LobbyFrame lobbyf;
 
 	@FXML private Button bLogin, bSignUp, bCancel; 
 	@FXML private TextField tfLoginUsername, tfRegisterUsername;
 	@FXML private PasswordField pfLoginPassword, pfRegisterPassword, pfRegisterPasswordRetype;
 
 
-	@FXML public void handleLogin(ActionEvent event) {
+	@FXML public void handleLogin(ActionEvent event) throws IOException {
 
 		if(tfLoginUsername.getText().trim().length() == 0 &&  pfLoginPassword.getText().trim().length() == 0) {
 
@@ -33,6 +35,11 @@ public class GUIController{
 		}else {
 
 			new TestClient().loginTestClient(tfLoginUsername.getText(), pfLoginPassword.getText());
+
+			//lobbyf = new LobbyFrame();
+			logf.getLoginInstance().loginStage.close();
+			
+
 		}
 	}
 

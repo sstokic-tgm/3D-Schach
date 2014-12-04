@@ -3,6 +3,7 @@ package projekt.ServerImpl;
 import java.io.IOException;
 import java.util.*;
 
+import projekt.ServerImpl.Chat.ChatMessage;
 import projekt.ServerImpl.Packets.*;
 import projekt.ServerImpl.RegLogLogic.DataBaseConnection;
 import projekt.ServerImpl.RegLogLogic.JDBCConnectionLogic;
@@ -66,6 +67,7 @@ public class GameServer {
 		kryo.register(AddUserPacket.class);
 		kryo.register(RemoveUserPacket.class);
 		kryo.register(AuthenticationSessionPacket.class);
+		kryo.register(ChatMessage.class);
 		kryo.register(String.class);
 	}
 
