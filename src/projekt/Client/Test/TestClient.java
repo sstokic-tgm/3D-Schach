@@ -79,7 +79,7 @@ public class TestClient extends Listener {
 
 						if(this.bAddUser == true) {
 
-							LobbyPanel.getLobbyPanelInstance().getDefaultListModel().removeAllElements();
+							//LobbyPanel.getLobbyPanelInstance().getDefaultListModel().removeAllElements();
 							
 							for(Map.Entry<Integer, String> entry : users.entrySet()) {
 

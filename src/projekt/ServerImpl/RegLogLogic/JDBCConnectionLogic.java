@@ -187,7 +187,7 @@ public class JDBCConnectionLogic {
 	 */
 	public boolean login(String username, String password) {
 
-		final String sql = "SELECT Username FROM Users WHERE Username = '" + username + "';";
+		final String sql = "SELECT Username FROM Users WHERE Username = '" + username + "' AND Password = '" + password + "';";
 
 		String user = "";
 		boolean found = false;
