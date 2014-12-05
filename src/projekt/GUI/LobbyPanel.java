@@ -8,14 +8,12 @@ import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.text.*;
 
-import projekt.Client.Test.TestClient;
-import projekt.ServerImpl.Chat.ChatMessage;
+import projekt.client.MainClient;
 
 public class LobbyPanel extends JPanel {
 
 	protected static LobbyPanel lobbyPanelInstance;
 	protected String columnNames[] = {"ID", "Roomname", "Players"};
-
 
 	private DefaultTableModel defaultTableModel;
 	private DefaultListModel defaultListModel;
@@ -30,12 +28,16 @@ public class LobbyPanel extends JPanel {
 	private JLabel userLabel;
 
 	private JButton createRoom, sendText;
+	
+	private MainClient mainClient;
 
 	public LobbyPanel() {
 
 		lobbyPanelInstance = this;
 
 		setupPanel();
+		
+		mainClient = MainClient.getMainClientInstance();
 	}
 
 	protected void setupPanel() {
@@ -118,8 +120,6 @@ public class LobbyPanel extends JPanel {
 
 		this.add(mainPanel, BorderLayout.CENTER);
 		this.add(activeUserPanel, BorderLayout.LINE_END);
-
-
 	}
 
 	public DefaultTableModel getDefaultTableModel() {
@@ -167,12 +167,8 @@ public class LobbyPanel extends JPanel {
 
 			if(e.getSource() == getSendTextButton()) {
 
-				ChatMessage chatMessage = new ChatMessage();
-				chatMessage.message = TestClient.getTestClientInstance().getUsername() + ": " + getChatText().getText();
-
+				mainClient.sendMessage(getChatText().getText());
 				getChatText().setText("");
-
-				TestClient.getTestClientInstance().getClient().sendTCP(chatMessage);
 
 			}else if(e.getSource() == getCreateRoomButton()) {
 

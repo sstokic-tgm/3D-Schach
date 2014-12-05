@@ -1,19 +1,13 @@
 package projekt.GUI;
 
 import java.io.IOException;
-import java.net.URL;
-
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import projekt.Client.Test.TestClient;
+import projekt.client.MainClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 
 public class GUIController{
 
@@ -34,12 +28,18 @@ public class GUIController{
 
 		}else {
 
-			new TestClient().loginTestClient(tfLoginUsername.getText(), pfLoginPassword.getText());
+			MainClient mainClient = new MainClient();
+			mainClient.mainClientLoginUser(tfLoginUsername.getText(), pfLoginPassword.getText());
 
-			//lobbyf = new LobbyFrame();
-			logf.getLoginInstance().loginStage.close();
-			
+			if(mainClient.getBoolLogin() == true) {
 
+				new LobbyFrame();
+				logf.getLoginInstance().loginStage.close();
+
+			}else {
+
+				JOptionPane.showMessageDialog(null, "Username or password is incorrect!");
+			}
 		}
 	}
 
@@ -54,16 +54,26 @@ public class GUIController{
 
 	@FXML public void handleSignUp(ActionEvent event){
 
-		if((tfRegisterUsername.getText().trim().length() == 0 &&  pfRegisterPassword.getText().trim().length() == 0) && (pfRegisterPassword.getText().equals(pfRegisterPasswordRetype.getText()))) {
+		if((tfRegisterUsername.getText().trim().length() == 0 &&  pfRegisterPassword.getText().trim().length() == 0) || (!pfRegisterPassword.getText().equals(pfRegisterPasswordRetype.getText()))) {
 
 			JOptionPane.showMessageDialog(null, "Invalid input!");
 
 		}else {
 
-			new TestClient().registerTestClient(tfRegisterUsername.getText(), pfRegisterPassword.getText());
+			MainClient mainClient = new MainClient();
+			mainClient.mainClientRegisterUser(tfRegisterUsername.getText(), pfRegisterPassword.getText());
 
-			regf.regStage.close();
-			logf.getLoginInstance().loginStage.show();
+			if(mainClient.getBoolRegister() == true)
+			{
+				JOptionPane.showMessageDialog(null, "Successfully registered!");
+
+				regf.regStage.close();
+				logf.getLoginInstance().loginStage.show();
+
+			}else {
+
+				JOptionPane.showMessageDialog(null, "An error occured while registrating or username already exists!");
+			}	
 		}
 	}
 
@@ -71,6 +81,5 @@ public class GUIController{
 
 		regf.regStage.close();
 		logf.getLoginInstance().loginStage.show();
-
 	}
 }

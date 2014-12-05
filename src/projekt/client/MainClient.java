@@ -1,25 +1,16 @@
-package projekt.Client.Test;
-
+package projekt.client;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.*;
-import javafx.collections.ObservableList.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.util.Callback;
-import projekt.GUI.LobbyFrame;
 import projekt.GUI.LobbyPanel;
+import projekt.GUI.LobbyFrame;
 import projekt.ServerImpl.Chat.ChatMessage;
-import projekt.ServerImpl.Packets.*;
+import projekt.ServerImpl.Packets.AddUserPacket;
+import projekt.ServerImpl.Packets.AuthenticationPacket;
+import projekt.ServerImpl.Packets.AuthenticationSessionPacket;
+import projekt.ServerImpl.Packets.RemoveUserPacket;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
@@ -27,26 +18,23 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 
+public class MainClient extends Listener {
 
-public class TestClient extends Listener {
+	protected static MainClient mainClientInstance;
 
-	protected static TestClient testClientInstance;
-	
 	private Client client;
 	private AuthenticationPacket authPacket;
-	private boolean login = false;
-	private boolean register = false;
+	private boolean login;
+	private boolean register;
 	private Map<Integer, String> users = new HashMap<Integer, String>();
 	private String username;
+	private String password;
 	protected boolean bAddUser = false;
 	protected boolean bRemoveUser = false;
 
+	public MainClient() {
 
-	public void loginTestClient(String username, String password) {
-
-		testClientInstance = this;
-		
-		this.username = username;
+		mainClientInstance = this;
 
 		client = new Client();
 		client.start();
@@ -54,25 +42,41 @@ public class TestClient extends Listener {
 		registerPackets();
 
 		client.addListener(this);
+	}
+
+	public MainClient(String username, String password) {
+
+		mainClientInstance = this;
+		
+		this.username = username;
+		this.password = password; // password sollte noch auf der Client-Seite gehasht werden(auf der Server-Seite dann auch wieder)
+
+		client = new Client();
+		client.start();
+
+		registerPackets();
+
+		client.addListener(this);
+	}
+
+	public void mainClientLoginUser(String username, String password) {
+
+		this.username = username;
+		this.password = password; // password sollte noch auf der Client-Seite gehasht werden(auf der Server-Seite dann auch wieder)
 
 		authPacket = ObjectSpace.getRemoteObject(client, 1, AuthenticationPacket.class);
 
 		new Thread( () -> {
 			try {
-				client.connect(5000, "localhost", 54553);
 
+				client.connect(5000, "localhost", 54553);
 
 				login = authPacket.login(username, password);
 
-				System.out.print("Login... Connection status: ");
-
 				if(login == true) {
-					
-					System.out.print("true");
 
-					System.out.println("\nDisconnecting... Connection status: " + authPacket.disconnect());
-
-					new LobbyFrame();
+					//new LobbyFrame();
+					authPacket.disconnect();
 
 
 					while(client.isConnected()) {
@@ -80,7 +84,7 @@ public class TestClient extends Listener {
 						if(this.bAddUser == true) {
 
 							//LobbyPanel.getLobbyPanelInstance().getDefaultListModel().removeAllElements();
-							
+
 							for(Map.Entry<Integer, String> entry : users.entrySet()) {
 
 								LobbyPanel.getLobbyPanelInstance().getDefaultListModel().addElement(entry.getValue().toString());
@@ -106,25 +110,15 @@ public class TestClient extends Listener {
 					}
 
 
-				}else {
-					System.out.print("false");
 				}
-
-
 			} catch (IOException ex) {
-				System.out.println("" + ex.getMessage());
+				System.out.println("Error: " + ex.getMessage());
 				System.exit(1);
 			}
 		}).start();
 	}
 
-	public void registerTestClient(String username, String password) {
-
-
-		client = new Client();
-		client.start();
-
-		registerPackets();
+	public void mainClientRegisterUser(String username, String password) {
 
 		authPacket = ObjectSpace.getRemoteObject(client, 1, AuthenticationPacket.class);
 
@@ -134,20 +128,65 @@ public class TestClient extends Listener {
 
 				register = authPacket.register(username, password);
 
-				System.out.print("Register... Registered: ");
-
-				if(register == true)
-					System.out.print("true");
-				else
-					System.out.print("false");
-
-				System.out.println("\nDisconnecting... Connection status: " + authPacket.disconnect());
+				authPacket.disconnect();
+				
+				mainClientInstance = null;
 
 			} catch (IOException ex) {
-				System.out.println("" + ex.getMessage());
+				System.out.println("Error: " + ex.getMessage());
 				System.exit(1);
 			}
 		}).start();
+	}
+
+
+	protected void registerPackets() {
+
+		Kryo kryo = client.getKryo();
+
+		ObjectSpace.registerClasses(kryo);
+		kryo.register(AuthenticationPacket.class);
+		kryo.register(AddUserPacket.class);
+		kryo.register(RemoveUserPacket.class);
+		kryo.register(AuthenticationSessionPacket.class);
+		kryo.register(ChatMessage.class);
+		kryo.register(String.class);
+	}
+
+	public boolean getBoolLogin() {
+
+		return this.login;
+	}
+
+	public boolean getBoolRegister() {
+
+		return this.register;
+	}
+
+	public Client getClient() {
+
+		return this.client;
+	}
+
+	public String getUsername() {
+
+		return this.username;
+	}
+
+	public static MainClient getMainClientInstance() {
+
+		if(mainClientInstance == null)
+			mainClientInstance = new MainClient();
+
+		return mainClientInstance;
+	}
+	
+	public void sendMessage(String message) {
+		
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.message = this.username + ": " + message;	
+
+		client.sendTCP(chatMessage);
 	}
 
 	public void received(Connection con, Object obj) {
@@ -172,43 +211,12 @@ public class TestClient extends Listener {
 
 			authSessionPacket.username = this.username;
 			client.sendTCP(authSessionPacket);
-		
+
 		}else if(obj instanceof ChatMessage) {
-			
+
 			ChatMessage chatMessage = (ChatMessage)obj;
-			
+
 			LobbyPanel.getLobbyPanelInstance().getChatView().append(chatMessage.message + "\n");
 		}
-	}
-
-	public Client getClient() {
-		
-		return client;
-	}
-
-	public String getUsername() {
-		
-		return username;
-	}
-
-	private void registerPackets() {
-
-		Kryo kryo = client.getKryo();
-
-		ObjectSpace.registerClasses(kryo);
-		kryo.register(AuthenticationPacket.class);
-		kryo.register(AddUserPacket.class);
-		kryo.register(RemoveUserPacket.class);
-		kryo.register(AuthenticationSessionPacket.class);
-		kryo.register(ChatMessage.class);
-		kryo.register(String.class);
-	}
-	
-	public static TestClient getTestClientInstance() {
-		
-		if(testClientInstance == null)
-			testClientInstance = new TestClient();
-		
-		return testClientInstance;
 	}
 }

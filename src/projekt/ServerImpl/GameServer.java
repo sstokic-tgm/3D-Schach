@@ -58,7 +58,7 @@ public class GameServer {
 		server.start();
 	}
 
-	private void registerPackets() {
+	protected void registerPackets() {
 
 		Kryo kryo = server.getKryo();
 
