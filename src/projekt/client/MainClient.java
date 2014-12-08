@@ -3,9 +3,13 @@ package projekt.client;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.swing.JOptionPane;
 
 import projekt.GUI.LobbyPanel;
 import projekt.GUI.LobbyFrame;
+import projekt.GUI.LoginFrame;
 import projekt.ServerImpl.Chat.ChatMessage;
 import projekt.ServerImpl.Packets.AddUserPacket;
 import projekt.ServerImpl.Packets.AuthenticationPacket;
@@ -17,6 +21,8 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
+
+import javafx.application.Platform;
 
 public class MainClient extends Listener {
 
@@ -47,7 +53,7 @@ public class MainClient extends Listener {
 	public MainClient(String username, String password) {
 
 		mainClientInstance = this;
-		
+
 		this.username = username;
 		this.password = password; // password sollte noch auf der Client-Seite gehasht werden(auf der Server-Seite dann auch wieder)
 
@@ -72,18 +78,19 @@ public class MainClient extends Listener {
 				client.connect(5000, "localhost", 54553);
 
 				login = authPacket.login(username, password);
+				authPacket.disconnect();
 
 				if(login == true) {
 
-					//new LobbyFrame();
-					authPacket.disconnect();
-
+					
+					new LobbyFrame();
+					LobbyFrame.getLobbyFrameInstance().getWelcomeUserLabel().setText("Welcome, " + getUsername());
 
 					while(client.isConnected()) {
 
 						if(this.bAddUser == true) {
 
-							//LobbyPanel.getLobbyPanelInstance().getDefaultListModel().removeAllElements();
+							LobbyPanel.getLobbyPanelInstance().getDefaultListModel().removeAllElements();
 
 							for(Map.Entry<Integer, String> entry : users.entrySet()) {
 
@@ -110,6 +117,9 @@ public class MainClient extends Listener {
 					}
 
 
+				} else {
+					
+					JOptionPane.showMessageDialog(null, "Username or password is incorrect!");
 				}
 			} catch (IOException ex) {
 				System.out.println("Error: " + ex.getMessage());
@@ -127,9 +137,17 @@ public class MainClient extends Listener {
 				client.connect(5000, "localhost", 54553);
 
 				register = authPacket.register(username, password);
-
 				authPacket.disconnect();
 				
+				if(register == true) {
+					
+					JOptionPane.showMessageDialog(null, "Successfully registered!");
+					
+				} else {
+					
+					JOptionPane.showMessageDialog(null, "An error occured while registrating or username already exists!");
+				}
+
 				mainClientInstance = null;
 
 			} catch (IOException ex) {
@@ -180,9 +198,9 @@ public class MainClient extends Listener {
 
 		return mainClientInstance;
 	}
-	
+
 	public void sendMessage(String message) {
-		
+
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.message = this.username + ": " + message;	
 

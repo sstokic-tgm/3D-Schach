@@ -31,15 +31,8 @@ public class GUIController{
 			MainClient mainClient = new MainClient();
 			mainClient.mainClientLoginUser(tfLoginUsername.getText(), pfLoginPassword.getText());
 
-			if(mainClient.getBoolLogin() == true) {
 
-				new LobbyFrame();
-				logf.getLoginInstance().loginStage.close();
-
-			}else {
-
-				JOptionPane.showMessageDialog(null, "Username or password is incorrect!");
-			}
+			logf.getLoginInstance().loginStage.close();
 		}
 	}
 
@@ -63,17 +56,8 @@ public class GUIController{
 			MainClient mainClient = new MainClient();
 			mainClient.mainClientRegisterUser(tfRegisterUsername.getText(), pfRegisterPassword.getText());
 
-			if(mainClient.getBoolRegister() == true)
-			{
-				JOptionPane.showMessageDialog(null, "Successfully registered!");
-
-				regf.regStage.close();
-				logf.getLoginInstance().loginStage.show();
-
-			}else {
-
-				JOptionPane.showMessageDialog(null, "An error occured while registrating or username already exists!");
-			}	
+			//regf.regStage.close();
+			//logf.getLoginInstance().loginStage.show();
 		}
 	}
 

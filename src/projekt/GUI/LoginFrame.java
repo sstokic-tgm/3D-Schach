@@ -30,7 +30,6 @@ public class LoginFrame extends Application  {
 		loginStage.setScene(scene);
 		loginStage.setResizable(false);
 		loginStage.show();
-
 	}
 
 	public static LoginFrame getLoginInstance(){
