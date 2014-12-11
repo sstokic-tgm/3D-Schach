@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.text.*;
 
+import projekt.client.ChessStarter;
 import projekt.client.MainClient;
 
 public class LobbyPanel extends JPanel {
@@ -172,7 +173,16 @@ public class LobbyPanel extends JPanel {
 
 			}else if(e.getSource() == getCreateRoomButton()) {
 
-				JOptionPane.showMessageDialog(null, "In work!");
+				JOptionPane.showMessageDialog(null, "In work! Only oppening the Chess View and single mode play is possible!");
+				LobbyFrame.getLobbyFrameInstance().setVisible(false);
+				
+				new Thread( () -> {
+					
+					new ChessStarter();
+					
+				}).start();
+				
+				
 			}
 		}
 	}
